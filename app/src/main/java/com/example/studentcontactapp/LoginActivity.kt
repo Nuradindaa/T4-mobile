@@ -1,4 +1,4 @@
-package com.example.studentcontactapp // Sesuaikan dengan nama package-mu!
+package com.example.studentcontactapp 
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,7 +7,7 @@ import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.studentcontactapp.utils.PrefManager // Pastikan import ini sesuai dengan lokasi PrefManager-mu
+import com.example.studentcontactapp.utils.PrefManager
 
 class LoginActivity : AppCompatActivity() {
 
@@ -17,10 +17,10 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        // Inisialisasi PrefManager
+    
         prefManager = PrefManager(this)
 
-        // CEK AUTO-LOGIN: Jika Remember Me aktif DAN sudah login, langsung pindah ke MainActivity
+        // CEK AUTO-LOGIN
         if (prefManager.isRememberMe() && prefManager.isLoggedIn()) {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
@@ -28,7 +28,6 @@ class LoginActivity : AppCompatActivity() {
             return // Menghentikan eksekusi kode di bawahnya
         }
 
-        // Menghubungkan ID dari layout XML ke variabel Kotlin
         val etUsername = findViewById<EditText>(R.id.etUsername)
         val etPassword = findViewById<EditText>(R.id.etPassword)
         val cbRememberMe = findViewById<CheckBox>(R.id.cbRememberMe)
@@ -41,22 +40,19 @@ class LoginActivity : AppCompatActivity() {
             val password = etPassword.text.toString()
             val isRemembered = cbRememberMe.isChecked
 
-            // VALIDASI: Sesuai instruksi, username = admin, password = 123456
+            // VALIDASI
             if (username == "admin" && password == "123456") {
 
                 // Simpan data login dan status remember me ke SharedPreferences
                 prefManager.setLogin(true, username)
                 prefManager.setRememberMe(isRemembered)
 
-                // Pindah halaman ke MainActivity
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
 
-                // Tutup LoginActivity agar user tidak kembali ke halaman login saat menekan tombol "Back" di HP
                 finish()
 
             } else {
-                // Tampilkan pesan error jika salah
                 Toast.makeText(this, "Username atau password salah", Toast.LENGTH_SHORT).show()
             }
         }
